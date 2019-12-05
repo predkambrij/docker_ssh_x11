@@ -20,7 +20,9 @@ RUN groupadd -g $GID -o $USER_NAME && \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
     true
 
-RUN apt-get install -y x11-apps
+RUN chmod 777 -R /tmp && \
+    apt-get install -y dbus x11-apps xterm && \
+    true
 
 USER $USER_NAME
 
