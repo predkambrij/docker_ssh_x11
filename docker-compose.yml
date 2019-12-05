@@ -1,0 +1,25 @@
+version: '2'
+services:
+  sshx11:
+    image: sshx11
+    build:
+      context: .
+      args:
+        UNAME: "${uname}"
+        UID: "${uid}"
+        GID: "${gid}"
+    network_mode: host
+    user: "${uname}"
+    hostname: "${hostname}"
+    environment:
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+    volumes:
+      - sshx11_home:/test
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ~/.Xauthority:/home/${uname}/.Xauthority
+    entrypoint:
+      - xeyes
+volumes:
+ sshx11_home:
+
