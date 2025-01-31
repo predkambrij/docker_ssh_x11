@@ -15,7 +15,7 @@ ssh -X <remote_server>
 ```console
 bash buildenv.sh
 docker-compose build
-docker-compose up
+docker compose run --rm -it sshx11
 ```
 
 3. You should now be able to run X apps from the docker container and they will be displayed on the client which is connected via ssh.  

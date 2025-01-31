@@ -1,4 +1,3 @@
-version: '2'
 services:
   sshx11:
     image: sshx11
@@ -13,14 +12,10 @@ services:
     hostname: "${hostname}"
     environment:
       - DISPLAY
-      - QT_X11_NO_MITSHM=1
-      - NO_AT_BRIDGE=1
     volumes:
       - sshx11_home:/test
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - /run/dbus/:/run/dbus/
-      - /dev/shm:/dev/shm
-      - ~/.Xauthority:/home/${uname}/.Xauthority
+      - ~/.Xauthority:/home/user/.Xauthority
     entrypoint:
       - xterm
 volumes:

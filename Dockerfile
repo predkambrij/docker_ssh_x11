@@ -1,11 +1,10 @@
-FROM ubuntu:18.04
+FROM ubuntu:24.04
 
 ARG USER_NAME=user
 ARG UID=1000
 ARG GID=1000
 
-RUN apt-get update && apt-get install -y sudo dbus-x11 terminator build-essential cmake locales && \
-    apt-get install -y gnome-terminal
+RUN apt-get update && apt-get install -y xterm x11-apps locales sudo
 
 # fix locales
 ENV LANG en_US.UTF-8
@@ -14,14 +13,15 @@ ENV LC_ALL en_US.UTF-8
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
 
-RUN groupadd -g $GID -o $USER_NAME && \
+# ubuntu 24.04 has ubuntu user with id 1000 and gid 1000
+RUN sed -i '/^ubuntu:/d' /etc/passwd && \
+    sed -i '/^ubuntu:/d' /etc/shadow && \
+    sed -i '/^ubuntu:/d' /etc/group && \
+    \
+    groupadd -g $GID -o $USER_NAME && \
     useradd -m -u $UID -g $GID -o -s /bin/bash $USER_NAME -p '*' && \
     usermod -aG sudo $USER_NAME && \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
-    true
-
-RUN chmod 777 -R /tmp && \
-    apt-get install -y dbus x11-apps xterm && \
     true
 
 USER $USER_NAME
